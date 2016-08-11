@@ -1,7 +1,9 @@
 package com.timdrivendevelopment.wsparrot;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
 import org.eclipse.jetty.server.Server;
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +34,22 @@ public class WsParrotWebServerTest {
     public void givenNoRouteDefined_whenPostRequest_shouldReturnNotFound() throws IOException {
         String content = Request.Post("http://localhost:9008").execute().returnContent().asString();
         assertThat(content, is("Not Found"));
+    }
+
+    @Test
+    public void givenTestRouteDefined_whenGetRequest_shouldReturnTestResponse() throws IOException {
+        server.addRoute("/test", "Test Response");
+        String content = Request.Get("http://localhost:9008/test").execute().returnContent().asString();
+        assertThat(content, is("Test Response"));
+    }
+
+    @Test
+    public void givenTestRouteDefinedAsPostRequest_whenGetRequest_shouldReturnTestResponse() throws IOException {
+        Request.Post("http://localhost:9008/parrotthis").bodyForm(
+                new BasicNameValuePair("uri", "/test"),
+                new BasicNameValuePair("response", "Test Response")).execute().discardContent();
+        String content = Request.Get("http://localhost:9008/test").execute().returnContent().asString();
+        assertThat(content, is("Test Response"));
     }
 
     @After
