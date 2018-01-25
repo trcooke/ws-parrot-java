@@ -1,10 +1,7 @@
 package com.timdrivendevelopment.wsparrot;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
-import org.eclipse.jetty.server.Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
